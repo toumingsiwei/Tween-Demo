@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Tween Demos</title>
+    <script type="text/javascript" src="http://g.tbcdn.cn/kissy/k/1.3.1/seed-min.js"></script>
+</head>
+<body>
+  <canvas id="Stage1" width="640" height="480"></canvas>
+  <script>
+      KISSY.config({
+          packages: [{
+              name: 'library',
+              path: './',
+              debug: true
+          }]
+      });
+      var datas = [];
+
+      KISSY.ready(function (S) {
+          KISSY.use("library/tween", function (S, TWEEN) {
+
+              debugger
+              var canvas = document.getElementById('Stage1');
+              var ctx = canvas.getContext('2d');
+              if (ctx) {
+                  var drawPie = function (x, y, radius) {
+                      canvas.width = canvas.width;
+                      ctx.save();
+                      ctx.beginPath();
+                      ctx.arc(x, y, radius, 0, 2 * Math.PI);
+                      ctx.closePath();
+                      ctx.fillStyle = '#0000ff';
+                      ctx.fill();
+                      ctx.stroke();
+                      ctx.restore();
+                  }
+
+                  var drawImage = function (img) {
+                      ctx.drawImage(img, 0, 0, 200, 200);
+                  }
+
+                  var imgObj = new Image();
+                  imgObj.onload = function () {
+                      drawImage(this);
+                  }
+                  imgObj.src = 'http://gtms03.alicdn.com/tps/i3/TB1evG0GXXXXXc4XpXXc8PZ9XXX-130-200.png';
+                  var position = { x: 50, y: 50 };
+                  var tween = new TWEEN.Tween(position)
+                  .to({ x: 560 }, 1000)
+                  //.yoyo(true)
+                  //.repeat(3)
+                  //.to({ x: [560, 280, 560] }, 3000)
+                  //.interpolation(TWEEN.Interpolation.CatmullRom)
+                  .easing(TWEEN.Easing.Quadratic.In)
+                  .onUpdate(function () {
+                      drawPie(this.x, this.y, 40)
+                  })
+
+                  //                  position = { x: 560, y: 50 }
+                  //                  var tweenBack = new TWEEN.Tween(position)
+                  //                  .to({ x: 50 }, 2000)
+                  //                  .delay(2000)
+                  //                  .onUpdate(function () {
+                  //                      drawPie(this.x, this.y, 40)
+                  //                  })
+                  //                  tween.chain(tweenBack);
+                  //                  tweenBack.chain(tween)
+
+
+                  tween.start();
+                  //animate();
+
+                  function animate() {
+                      requestAnimationFrame(animate);
+                      TWEEN.update();
+                  }
+              }
+          });
+      }); 
+  </script>
+</body>
+</html>
